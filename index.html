@@ -14,214 +14,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-    <style>
-        :root {
-            color-scheme: dark;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            color: #f2f2f2;
-            background: #0e0e0e;
-        }
-
-        .app {
-            display: grid;
-            grid-template-columns: 340px minmax(0, 1fr);
-            min-height: 100vh;
-        }
-
-        aside {
-            padding: 21px;
-            background: #191919;
-            border-right: 1px solid #353535;
-        }
-
-        main {
-            padding: 24px;
-            min-width: 0;
-        }
-
-        h1 {
-            margin: 0 0 7px;
-            font-size: 23px;
-            letter-spacing: -.02em;
-        }
-
-        h2 {
-            font-size: 15px;
-            margin: 24px 0 12px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 7px;
-        }
-
-        p {
-            font-size: 12px;
-            color: #aaa;
-            line-height: 1.5;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            color: #c7c7c7;
-            margin-bottom: 5px;
-        }
-
-        .field {
-            margin-bottom: 12px;
-        }
-
-        .fields-two {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        input,
-        select,
-        button {
-            font: inherit;
-            color: #f2f2f2;
-            background: #252525;
-            border: 1px solid #434343;
-            border-radius: 7px;
-            padding: 10px;
-            width: 100%;
-        }
-
-        input:focus,
-        select:focus,
-        button:focus-visible {
-            outline: 2px solid #c9a84c;
-            outline-offset: 1px;
-        }
-
-        input[type="file"] {
-            font-size: 11px;
-            padding: 7px;
-        }
-
-        input[type="number"] {
-            appearance: textfield;
-        }
-
-        .button-grid {
-            display: grid;
-            gap: 8px;
-            margin-top: 20px;
-        }
-
-        button {
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-        }
-
-        button:hover:not(:disabled) {
-            background: #373737;
-        }
-
-        button.primary {
-            background: #a98734;
-            color: #111;
-            border-color: #c9a84c;
-        }
-
-        button.primary:hover:not(:disabled) {
-            background: #d2b45b;
-        }
-
-        button:disabled {
-            opacity: .55;
-            cursor: wait;
-        }
-
-        .toolbar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-
-        .toolbar select {
-            width: auto;
-            min-width: 190px;
-        }
-
-        #status {
-            color: #bbb;
-            font-size: 12px;
-        }
-
-        .preview-frame {
-            min-height: 450px;
-            border: 1px solid #303030;
-            border-radius: 12px;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            background: #0a0a0a;
-            padding: 18px;
-        }
-
-        canvas {
-            display: block;
-            width: 100%;
-            max-width: 700px;
-            height: auto;
-            aspect-ratio: 1/1;
-            background: #0a0a0a;
-        }
-
-        .hint {
-            margin-top: 15px;
-            font-size: 12px;
-            color: #999;
-        }
-
-        .error {
-            color: #ffaaa5 !important;
-        }
-
-        @media (max-width: 850px) {
-            .app {
-                grid-template-columns: 1fr;
-            }
-
-            aside {
-                border-right: 0;
-                border-bottom: 1px solid #353535;
-            }
-
-            main {
-                padding: 16px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./styles.css?v=3">
 </head>
 
 <body>
     <div class="app">
         <aside>
-            <h1>The Archives | Graphic Generator</h1>
-            <p>Matchup, spoiler warning, and results. Your original SVG design is preserved.</p>
-
-            <h2>Match information</h2>
+            <h1>Match information</h1>
             <div class="field">
                 <label for="division">Division</label>
                 <input id="division" value="ELDER" autocomplete="off">
             </div>
-
-            <h2>Team 1</h2>
             <div class="field">
-                <label for="team1Name">Team name</label>
+                <label for="stageText">Stage text (matchup and spoiler)</label>
+                <input id="stageText" value="Swiss Stage" autocomplete="off">
+            </div>
+
+            <h1>Team 1</h1>
+            <div class="field">
                 <input id="team1Name" value="AEON FORGE" autocomplete="off">
             </div>
             <div class="field">
@@ -233,9 +43,8 @@
                 <input id="team1LogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
             </div>
 
-            <h2>Team 2</h2>
+            <h1>Team 2</h1>
             <div class="field">
-                <label for="team2Name">Team name</label>
                 <input id="team2Name" value="AEON AETHER" autocomplete="off">
             </div>
             <div class="field">
@@ -258,443 +67,44 @@
                     <input id="team2Score" type="number" min="0" step="1" value="1">
                 </div>
             </div>
-            <p>Results show the winning team's logo and name, with the score ordered winner–loser.</p>
 
             <div class="button-grid">
-                <button id="previewBtn" type="button">Refresh preview</button>
                 <button id="exportMatchupBtn" type="button">Export matchup PNG</button>
                 <button id="exportSpoilerBtn" type="button">Export spoiler PNG</button>
                 <button id="exportResultsBtn" type="button">Export results PNG</button>
                 <button id="exportAllBtn" class="primary" type="button">Export all 3 as ZIP</button>
             </div>
-            <p class="hint">A logo URL from a host that blocks cross-origin requests falls back to this
-                site's server-side fetch, but only for allowlisted hosts; otherwise upload the file.</p>
         </aside>
 
         <main>
             <div class="toolbar">
-                <select id="artboardSelect" aria-label="Preview artboard">
-                    <option value="matchup">Preview: Matchup</option>
-                    <option value="spoiler">Preview: Spoiler warning</option>
-                    <option value="results">Preview: Results</option>
-                </select>
+                <div class="preview-tabs" role="group" aria-label="Choose a preview">
+                    <button type="button" class="active" data-preview="matchup" aria-pressed="true">Matchup</button>
+                    <button type="button" data-preview="spoiler" aria-pressed="false">Spoiler Warning</button>
+                    <button type="button" data-preview="results" aria-pressed="false">Results</button>
+                </div>
                 <span id="status" role="status" aria-live="polite">Loading template and font…</span>
             </div>
             <div class="preview-frame">
-                <canvas id="previewCanvas" width="1024" height="1024" aria-label="Graphic preview"></canvas>
+                <div class="preview-stage" id="previewStage">
+                    <canvas id="previewCanvas" width="1024" height="1024" aria-label="Graphic preview"></canvas>
+                    <div class="preview-hotspots" id="previewHotspots" aria-label="Edit preview elements"></div>
+                    <form class="edit-popover" id="editPopover" hidden aria-label="Edit graphic text">
+                        <div id="popoverInputs"></div>
+                        <div class="popover-actions">
+                            <button type="button" id="popoverCancel">Cancel</button>
+                            <button type="submit" class="save">Apply</button>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <p class="preview-help">Click a name, division, stage label, or result score to edit it. Click a logo to
+                upload, or drag and drop an image or image URL onto it. Names over 18 characters wrap onto two lines.
+            </p>
         </main>
     </div>
 
-    <script type="module">
-        import { Canvg } from "https://cdn.jsdelivr.net/npm/canvg@4.0.3/+esm";
-
-        const SVG_NS = "http://www.w3.org/2000/svg";
-        const XLINK_NS = "http://www.w3.org/1999/xlink";
-        const FONT = '"Bebas Neue"';
-        const TEMPLATE_URL = "./template.svg";
-        const ARTBOARDS = {
-            matchup: { x: 0, width: 1024, filename: "matchup" },
-            spoiler: { x: 1074, width: 1024, filename: "spoiler-warning" },
-            results: { x: 2148, width: 1024, filename: "results" }
-        };
-
-        const $ = id => document.getElementById(id);
-        const fileCache = new WeakMap();
-        const urlCache = new Map();
-        let templateText = "";
-        let previewTimeout = null;
-        let previewSequence = 0;
-        let busy = false;
-
-        function setStatus(message, isError = false) {
-            $("status").textContent = message;
-            $("status").classList.toggle("error", isError);
-        }
-
-        function readFileAsDataURL(file) {
-            if (fileCache.has(file)) return fileCache.get(file);
-            const promise = new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(new Error(`Could not read ${file.name}`));
-                reader.readAsDataURL(file);
-            });
-            fileCache.set(file, promise);
-            return promise;
-        }
-
-        // Some image hosts send no Access-Control-Allow-Origin header, so the
-        // browser refuses a cross-origin fetch() even though the file is public.
-        // The deployed site exposes a same-origin /logo-proxy/<host><path>
-        // endpoint for an allowlisted set of hosts; it is only used after the
-        // direct request fails, so nothing changes for hosts that do send the
-        // header. On a host without that endpoint the retry 404s and the upload
-        // path still works.
-        const LOGO_PROXY = "./logo-proxy/";
-
-        function proxiedLogoUrl(url) {
-            try {
-                const parsed = new URL(url, location.href);
-                if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return null;
-                return new URL(LOGO_PROXY + parsed.host + parsed.pathname + parsed.search, location.href).href;
-            } catch { return null; }
-        }
-
-        async function fetchLogoAsDataURL(target, shownUrl) {
-            let response;
-            try { response = await fetch(target, { mode: "cors" }); }
-            catch { throw new Error(`Can't access logo URL: ${shownUrl}. Try uploading the image instead (the site may block CORS).`); }
-            if (!response.ok) throw new Error(`Logo URL returned HTTP ${response.status}: ${shownUrl}`);
-            const blob = await response.blob();
-            if (!blob.type.startsWith("image/")) throw new Error(`The URL did not return an image: ${shownUrl}`);
-            return readFileAsDataURL(new File([blob], "logo", { type: blob.type }));
-        }
-
-        async function loadUrlAsDataURL(url) {
-            if (urlCache.has(url)) return urlCache.get(url);
-            const promise = (async () => {
-                try { return await fetchLogoAsDataURL(url, url); }
-                catch (directError) {
-                    const proxied = proxiedLogoUrl(url);
-                    if (!proxied) throw directError;
-                    try { return await fetchLogoAsDataURL(proxied, url); }
-                    catch (proxyError) {
-                        if (/HTTP 403/.test(proxyError.message)) {
-                            let host = url;
-                            try { host = new URL(url).host; } catch { /* keep the raw value */ }
-                            throw new Error(`The logo host ${host} is not on this site's proxy allowlist. Upload the image instead.`);
-                        }
-                        throw new Error(`${directError.message} (server-side retry failed: ${proxyError.message})`);
-                    }
-                }
-            })();
-            urlCache.set(url, promise);
-            try { return await promise; }
-            catch (error) { urlCache.delete(url); throw error; }
-        }
-
-        async function getLogo(index) {
-            const file = $(`team${index}LogoFile`).files[0];
-            const url = $(`team${index}LogoUrl`).value.trim();
-            if (file) return readFileAsDataURL(file);
-            if (url) return loadUrlAsDataURL(url);
-            return null; // Retain the logo supplied in the SVG template
-        }
-
-        async function collectData() {
-            const [logo1, logo2] = await Promise.all([getLogo(1), getLogo(2)]);
-            const score1 = Number($("team1Score").value);
-            const score2 = Number($("team2Score").value);
-            if (![score1, score2].every(n => Number.isInteger(n) && n >= 0)) {
-                throw new Error("Scores must be non-negative whole numbers.");
-            }
-            return {
-                division: $("division").value.trim() || "DIVISION",
-                team1: { name: $("team1Name").value.trim() || "TEAM 1", logo: logo1, score: score1 },
-                team2: { name: $("team2Name").value.trim() || "TEAM 2", logo: logo2, score: score2 }
-            };
-        }
-
-        function parseSvg(source) {
-            const doc = new DOMParser().parseFromString(source, "image/svg+xml");
-            if (doc.querySelector("parsererror")) throw new Error("The SVG template could not be parsed.");
-            return doc;
-        }
-
-        // Convert nested Affinity group coordinates into the SVG's global coordinates.
-        // This eliminates guesses about left/right team translation matrices.
-        function fullTransform(element) {
-            const chain = [];
-            for (let current = element; current?.nodeType === Node.ELEMENT_NODE; current = current.parentElement) {
-                const transform = current.getAttribute("transform");
-                if (transform) chain.unshift(new DOMMatrix(transform));
-            }
-            return chain.reduce((matrix, part) => matrix.multiply(part), new DOMMatrix());
-        }
-
-        function pointInRoot(element, x, y) {
-            return fullTransform(element).transformPoint({ x, y });
-        }
-
-        // The original team logos are <use> elements. Replace those with real
-        // <image> elements without changing the Affinity positioning/scaling group.
-        function setLogo(svgDoc, groupId, dataUrl) {
-            if (!dataUrl) return;
-            const group = svgDoc.getElementById(groupId);
-            if (!group) throw new Error(`Missing logo group: ${groupId}`);
-            const existing = group.querySelector("use, image");
-            if (!existing) throw new Error(`No logo element in: ${groupId}`);
-
-            const image = svgDoc.createElementNS(SVG_NS, "image");
-            for (const attr of ["x", "y", "width", "height"]) {
-                image.setAttribute(attr, existing.getAttribute(attr) || (attr === "width" || attr === "height" ? "512px" : "0"));
-            }
-            image.setAttribute("preserveAspectRatio", "xMidYMid meet");
-            image.setAttribute("href", dataUrl);
-            image.setAttributeNS(XLINK_NS, "xlink:href", dataUrl);
-            existing.replaceWith(image);
-        }
-
-        // The old SVG uses 'BebasNeue-Regular' as its first choice, which may
-        // not be installed. Normalize to the web font we have already loaded.
-        function normaliseFont(svgDoc) {
-            for (const textEl of svgDoc.querySelectorAll("text")) {
-                textEl.style.fontFamily = `${FONT}, sans-serif`;
-            }
-        }
-
-        function measureText(text, fontPx) {
-            const canvas = measureText.canvas || (measureText.canvas = document.createElement("canvas"));
-            const ctx = canvas.getContext("2d");
-            ctx.font = `${fontPx}px ${FONT}`;
-            return ctx.measureText(text).width;
-        }
-
-        // Position a text element by its measured midpoint, in SVG global space.
-        // Both the parent transform and its scale are accounted for.
-        function centreText(textEl, value, centreGlobalX, maxGlobalWidth) {
-            if (!textEl) throw new Error("A text field was not found in the SVG template.");
-            textEl.textContent = String(value);
-            textEl.style.fontFamily = `${FONT}, sans-serif`;
-            const baseFontPx = parseFloat(textEl.style.fontSize) || 54.167;
-            const matrix = fullTransform(textEl.parentElement);
-            const scaleX = Math.hypot(matrix.a, matrix.b) || 1;
-            const availableLocalWidth = maxGlobalWidth / scaleX;
-            const widthAtBase = measureText(String(value), baseFontPx);
-            const fontPx = widthAtBase > availableLocalWidth
-                ? baseFontPx * availableLocalWidth / widthAtBase
-                : baseFontPx;
-            const actualWidth = measureText(String(value), fontPx);
-
-            // The horizontal translation for this text's transformed group, solved
-            // in its own coordinate system (not in viewport or artboard pixels).
-            const inverse = matrix.inverse();
-            const centreLocal = inverse.transformPoint({ x: centreGlobalX, y: 0 }).x;
-            textEl.style.fontSize = `${fontPx}px`;
-            textEl.setAttribute("text-anchor", "start");
-            textEl.style.textAnchor = "start";
-            textEl.setAttribute("x", `${centreLocal - actualWidth / 2}px`);
-        }
-
-        function teamLogoGlobalX(svgDoc, groupId) {
-            const group = svgDoc.getElementById(groupId);
-            if (!group) throw new Error(`Missing logo group: ${groupId}`);
-            // Both the original <use> and replacement <image> occupy a 512x512 slot.
-            const slot = group.querySelector("use, image");
-            const x = parseFloat(slot?.getAttribute("x") || "0");
-            const y = parseFloat(slot?.getAttribute("y") || "0");
-            const width = parseFloat(slot?.getAttribute("width") || "512");
-            const height = parseFloat(slot?.getAttribute("height") || "512");
-            return pointInRoot(group, x + width / 2, y + height / 2).x;
-        }
-
-        function setTeamName(svgDoc, nameGroupId, logoGroupId, name) {
-            const text = svgDoc.getElementById(nameGroupId)?.querySelector("text");
-            centreText(text, name, teamLogoGlobalX(svgDoc, logoGroupId), 405);
-        }
-
-        function setDivision(svgDoc, artboardKey, division) {
-            const groupId = { matchup: "DIVISION5", spoiler: "DIVISION3", results: "DIVISION1" }[artboardKey];
-            const text = svgDoc.getElementById(groupId)?.querySelector("text");
-            // Right-hand division header is centred at 822 in each 1024x1024 artboard.
-            const globalX = ARTBOARDS[artboardKey].x + 822;
-            centreText(text, division.toUpperCase(), globalX, 280);
-        }
-
-        function setMatchup(svgDoc, data) {
-            setLogo(svgDoc, "AEON_Forge.png1", data.team1.logo);
-            setLogo(svgDoc, "AEON_Aether.png", data.team2.logo);
-            setTeamName(svgDoc, "left-team-name1", "AEON_Forge.png1", data.team1.name.toUpperCase());
-            setTeamName(svgDoc, "right-team-name", "AEON_Aether.png", data.team2.name.toUpperCase());
-            setDivision(svgDoc, "matchup", data.division);
-        }
-
-        function setSpoiler(svgDoc, data) {
-            setDivision(svgDoc, "spoiler", data.division);
-        }
-
-        function setResults(svgDoc, data) {
-            if (data.team1.score === data.team2.score) {
-                throw new Error("Results need a winner. Team scores cannot be tied.");
-            }
-            const winner = data.team1.score > data.team2.score ? data.team1 : data.team2;
-            const loser = data.team1.score > data.team2.score ? data.team2 : data.team1;
-            setLogo(svgDoc, "AEON_Forge.png", winner.logo);
-            setTeamName(svgDoc, "left-team-name", "AEON_Forge.png", winner.name.toUpperCase());
-            setDivision(svgDoc, "results", data.division);
-
-            // The sole 300px text element is the big gold result score in artboard 3.
-            const scoreText = [...svgDoc.querySelectorAll("text")]
-                .find(el => Math.abs(parseFloat(el.style.fontSize) - 300) < 0.01);
-            centreText(scoreText, `${winner.score}-${loser.score}`, ARTBOARDS.results.x + 512, 500);
-        }
-
-        function makeSvg(data, artboardKey) {
-            const svgDoc = parseSvg(templateText);
-            normaliseFont(svgDoc);
-            if (artboardKey === "matchup") setMatchup(svgDoc, data);
-            else if (artboardKey === "spoiler") setSpoiler(svgDoc, data);
-            else if (artboardKey === "results") setResults(svgDoc, data);
-            else throw new Error(`Unknown artboard: ${artboardKey}`);
-
-            const artboard = ARTBOARDS[artboardKey];
-            const root = svgDoc.documentElement;
-            root.setAttribute("width", "1024");
-            root.setAttribute("height", "1024");
-            root.setAttribute("viewBox", `${artboard.x} 0 1024 1024`);
-            root.setAttribute("preserveAspectRatio", "xMidYMid meet");
-            return new XMLSerializer().serializeToString(svgDoc);
-        }
-
-        async function renderToCanvas(svgText, canvas) {
-            const ctx = canvas.getContext("2d", { alpha: true });
-            ctx.clearRect(0, 0, 1024, 1024);
-            const renderer = Canvg.fromString(ctx, svgText);
-            await renderer.render();
-            renderer.stop();
-        }
-
-        function canvasToPngBlob(canvas) {
-            return new Promise((resolve, reject) =>
-                canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("Could not encode PNG")), "image/png")
-            );
-        }
-
-        function download(blob, filename) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            setTimeout(() => URL.revokeObjectURL(url), 30000);
-        }
-
-        function safeName(str) {
-            return str.replace(/[^a-z0-9_-]+/gi, "-").replace(/^-+|-+$/g, "").slice(0, 45) || "team";
-        }
-
-        function outputPrefix(data) {
-            return `${safeName(data.team1.name)}_vs_${safeName(data.team2.name)}`;
-        }
-
-        function newCanvas() {
-            const canvas = document.createElement("canvas");
-            canvas.width = canvas.height = 1024;
-            return canvas;
-        }
-
-        async function pngFor(data, artboardKey) {
-            const canvas = newCanvas();
-            await renderToCanvas(makeSvg(data, artboardKey), canvas);
-            return canvasToPngBlob(canvas);
-        }
-
-        async function refreshPreview() {
-            if (busy) return;
-            const thisSequence = ++previewSequence;
-            try {
-                setStatus("Rendering preview…");
-                const data = await collectData();
-                const selected = $("artboardSelect").value;
-                const temporaryCanvas = newCanvas();
-                await renderToCanvas(makeSvg(data, selected), temporaryCanvas);
-                if (thisSequence !== previewSequence) return;
-                const ctx = $("previewCanvas").getContext("2d");
-                ctx.clearRect(0, 0, 1024, 1024);
-                ctx.drawImage(temporaryCanvas, 0, 0);
-                setStatus("Preview ready · 1024 × 1024");
-            } catch (error) {
-                console.error(error);
-                if (thisSequence === previewSequence) setStatus(error.message, true);
-            }
-        }
-
-        function schedulePreview() {
-            clearTimeout(previewTimeout);
-            previewTimeout = setTimeout(refreshPreview, 350);
-        }
-
-        async function withBusyState(work) {
-            if (busy) return;
-            busy = true;
-            ++previewSequence;
-            clearTimeout(previewTimeout);
-            for (const button of document.querySelectorAll("button")) button.disabled = true;
-            try { await work(); }
-            catch (error) { console.error(error); setStatus(error.message, true); alert(error.message); }
-            finally {
-                for (const button of document.querySelectorAll("button")) button.disabled = false;
-                busy = false;
-            }
-        }
-
-        async function exportOne(artboardKey) {
-            await withBusyState(async () => {
-                const data = await collectData();
-                setStatus(`Exporting ${artboardKey}…`);
-                const blob = await pngFor(data, artboardKey);
-                download(blob, `${outputPrefix(data)}_${ARTBOARDS[artboardKey].filename}.png`);
-                setStatus("PNG exported.");
-            });
-        }
-
-        async function exportAll() {
-            await withBusyState(async () => {
-                if (!window.JSZip) throw new Error("ZIP library did not load. Check your internet connection.");
-                const data = await collectData();
-                if (data.team1.score === data.team2.score) throw new Error("Results need a winner before exporting all three graphics.");
-                const zip = new window.JSZip();
-                for (const key of ["matchup", "spoiler", "results"]) {
-                    setStatus(`Rendering ${key}…`);
-                    zip.file(`${outputPrefix(data)}_${ARTBOARDS[key].filename}.png`, await pngFor(data, key));
-                }
-                setStatus("Creating ZIP…");
-                const blob = await zip.generateAsync({ type: "blob" });
-                download(blob, `${outputPrefix(data)}_graphics.zip`);
-                setStatus("All three graphics exported.");
-            });
-        }
-
-        async function init() {
-            try {
-                setStatus("Loading template…");
-                const response = await fetch(TEMPLATE_URL);
-                if (!response.ok) throw new Error(`Could not load template.svg (HTTP ${response.status}). It must be served from the same directory as index.html.`);
-                templateText = await response.text();
-
-                // Wait for the actual typeface used by canvas measurements AND canvg.
-                setStatus("Loading Bebas Neue…");
-                await document.fonts.load('54.167px "Bebas Neue"');
-                await document.fonts.load('83.333px "Bebas Neue"');
-                await document.fonts.load('300px "Bebas Neue"');
-                await document.fonts.ready;
-                if (!document.fonts.check('54.167px "Bebas Neue"')) {
-                    throw new Error("Bebas Neue could not be loaded. Check your internet connection.");
-                }
-
-                $("previewBtn").addEventListener("click", refreshPreview);
-                $("artboardSelect").addEventListener("change", refreshPreview);
-                $("exportMatchupBtn").addEventListener("click", () => exportOne("matchup"));
-                $("exportSpoilerBtn").addEventListener("click", () => exportOne("spoiler"));
-                $("exportResultsBtn").addEventListener("click", () => exportOne("results"));
-                $("exportAllBtn").addEventListener("click", exportAll);
-                for (const input of document.querySelectorAll("input")) {
-                    input.addEventListener("input", schedulePreview);
-                    input.addEventListener("change", schedulePreview);
-                }
-                await refreshPreview();
-            } catch (error) {
-                console.error(error);
-                setStatus(error.message, true);
-                alert(error.message);
-            }
-        }
-
-        init();
-    </script>
+    <script type="module" src="./app.js?v=3"></script>
 </body>
 
 </html>
