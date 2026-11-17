@@ -7,6 +7,20 @@
   box-sizing: border-box;
 }
 
+/* Keeps the document's h1 available to assistive tech without adding a visible
+   heading the design does not want. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 body {
   margin: 0;
   color: #f2f2f2;
@@ -41,6 +55,16 @@ h2 {
   margin: 24px 0 12px;
   border-bottom: 1px solid #333;
   padding-bottom: 7px;
+}
+
+/* Sidebar sections are h2 for a sane heading outline, but keep the h1 look the
+   design used. */
+h2.section-title {
+  font-size: 23px;
+  margin: 0 0 7px;
+  letter-spacing: -.02em;
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 p {

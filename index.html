@@ -20,7 +20,8 @@
 <body>
     <div class="app">
         <aside>
-            <h1>Match information</h1>
+            <h1 class="sr-only">The Archives | Graphic Generator</h1>
+            <h2 class="section-title">Match information</h2>
             <div class="field">
                 <label for="division">Division</label>
                 <input id="division" value="ELDER" autocomplete="off">
@@ -30,9 +31,9 @@
                 <input id="stageText" value="Swiss Stage" autocomplete="off">
             </div>
 
-            <h1>Team 1</h1>
+            <h2 class="section-title">Team 1</h2>
             <div class="field">
-                <input id="team1Name" value="AEON FORGE" autocomplete="off">
+                <input id="team1Name" value="AEON FORGE" autocomplete="off" aria-label="Team 1 name">
             </div>
             <div class="field">
                 <label for="team1LogoUrl">Logo URL</label>
@@ -43,9 +44,9 @@
                 <input id="team1LogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
             </div>
 
-            <h1>Team 2</h1>
+            <h2 class="section-title">Team 2</h2>
             <div class="field">
-                <input id="team2Name" value="AEON AETHER" autocomplete="off">
+                <input id="team2Name" value="AEON AETHER" autocomplete="off" aria-label="Team 2 name">
             </div>
             <div class="field">
                 <label for="team2LogoUrl">Logo URL</label>

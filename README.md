@@ -6,7 +6,8 @@ logos and the score; get PNGs at 1024 × 1024, either one at a time or all three
 as a ZIP.
 
 Everything happens in the browser. There is no server-side code, no database and
-no API keys — the whole app is `index.html` plus the artwork in `template.svg`.
+no API keys — the whole app is `index.html`, `styles.css` and `app.js` plus the
+artwork in `template.svg`.
 
 This repository holds the app only. Hosting is maintained separately by the
 maintainer; changes arrive as pull requests, get reviewed, and are deployed from
@@ -71,7 +72,9 @@ is a hosting decision, deliberately allowlisted rather than open.
 ## Layout
 
 ```
-index.html            the entire application (markup, styles, script)
+index.html            markup: sidebar, preview tabs, canvas, edit popover
+styles.css            all styling
+app.js                all behaviour (SVG manipulation, canvg render, export)
 template.svg          source artwork: three 1024x1024 artboards side by side
 favicon.ico           tab icon, 16/32/48/64, shared with our other tools
 apple-touch-icon.png  180px iOS home-screen icon
@@ -79,19 +82,33 @@ apple-touch-icon.png  180px iOS home-screen icon
 
 A clone can be served from its root as-is.
 
+`index.html` loads the other two with a `?v=` cache key (`styles.css?v=3`,
+`app.js?v=3`). **Bump both numbers whenever you change either file**: Cloudflare
+holds these for four hours on our host, and a browser hard-refresh does not
+bypass the edge copy.
+
 ## Editing the artwork
 
 `template.svg` is the design source, exported from Affinity — 3.5 MB, with six
 embedded base64 images. Keep the artboard order and the 1024 px widths, and keep
-the `team1Logo` / `team2Logo` / name group ids that the script looks up; the
-positions themselves are free because everything is measured at render time.
+the group ids the script looks up; the positions themselves are free because
+everything is measured at render time.
+
+**One exception:** the clickable hotspots in `app.js` (`HOTSPOTS`) are fixed
+rectangles in artwork pixels. If a re-export moves the logos or the text blocks,
+the artwork follows but the hotspots do not, and clicks land on the wrong thing
+with no error. Re-measure them whenever the template's layout changes.
+
+Known behaviour: if no logo is supplied and Team 2 wins, the results graphic
+keeps the template's built-in emblem next to Team 2's name — the app has no
+logo of its own for that slot. Supply the winning team's logo for results.
 
 ## Contributing
 
 Fork, branch, and open a pull request against `main`. Keep changes to the app —
-`index.html`, `template.svg`, the icons — so the PR is reviewable and can be
-deployed as-is. Please check that a checkout still renders all three artboards
-and exports a ZIP before opening it.
+`index.html`, `styles.css`, `app.js`, `template.svg`, the icons — so the PR is
+reviewable and can be deployed as-is. Please check that a checkout still renders
+all three artboards and exports a ZIP before opening it.
 
 ## Credits
 

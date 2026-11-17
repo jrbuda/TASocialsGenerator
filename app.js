@@ -18,6 +18,13 @@ const ARTBOARDS = Object.freeze({
   results: { x: 2148, filename: "results" }
 });
 
+// Hotspot rectangles, in artwork pixels (0..1024 per artboard).
+//
+// These are the one place that mirrors template.svg GEOMETRY instead of
+// measuring it: text and logos are positioned by reading the SVG at render
+// time, but these boxes are fixed. If the template is re-exported with the
+// logos or text blocks moved, the artwork follows and these do not -- clicks
+// would silently land on the wrong thing. Re-measure them then.
 const HOTSPOTS = Object.freeze({
   matchup: [
     { type: "logo", team: 1, label: "Change Team 1 logo", x: 42, y: 272, w: 341, h: 342 },
@@ -47,6 +54,7 @@ const droppedFiles = new Map();
 let templateSource = "";
 let activeArtboard = "matchup";
 let editingFields = [];
+let lastTrigger = null;
 let previewTimer = 0;
 let previewRequest = 0;
 let exportBusy = false;
@@ -309,9 +317,12 @@ function setStage(svg, artboard, stageLabel) {
   const id = { matchup: "SERIES-INFO1", spoiler: "SERIES-INFO" }[artboard];
   if (!id) return; // The results graphic has no stage label.
   const group = getSvgGroup(svg, id);
+  // Prefer the text that currently reads "swiss stage", but fall back to the
+  // group's first text: the label is designer-editable artwork, and matching on
+  // its wording alone would turn a rename in Affinity into a hard render error.
   const label = [...group.querySelectorAll("text")].find(text =>
     text.textContent.trim().toLowerCase() === "swiss stage"
-  );
+  ) || group.querySelector("text");
   if (!label) throw new Error(`No stage label found in SVG layer ${id}.`);
   centreText(label, stageLabel, ARTBOARDS[artboard].x + SIZE / 2, 880);
 }
@@ -416,10 +427,15 @@ function winnerIndex() {
   return left >= right ? 1 : 2;
 }
 
-function closeEditor() {
-  requireElement("editPopover").hidden = true;
+function closeEditor(restoreFocus = false) {
+  const popover = requireElement("editPopover");
+  if (popover.hidden) return;
+  popover.hidden = true;
   requireElement("popoverInputs").replaceChildren();
   editingFields = [];
+  // Send focus back to the hotspot that opened the editor, so a keyboard user
+  // does not restart tabbing from the top of the page.
+  if (restoreFocus && lastTrigger?.isConnected) lastTrigger.focus();
 }
 
 function openEditor(fields) {
@@ -462,7 +478,7 @@ function saveEditor(event) {
     }
   }
   for (const { id, value } of values) requireElement(id).value = value;
-  closeEditor();
+  closeEditor(true);
   schedulePreview();
 }
 
@@ -549,6 +565,7 @@ function rebuildHotspots() {
     positionHotspot(button, spot);
     button.addEventListener("click", () => {
       if (exportBusy) return;
+      lastTrigger = button;
       if (spot.type === "logo") {
         requireElement(`team${assignedTeam(spot)}LogoFile`).click();
       } else if (spot.type === "score") {
@@ -657,9 +674,15 @@ function bindEvents() {
   requireElement("exportResultsBtn").addEventListener("click", () => exportGraphic("results"));
   requireElement("exportAllBtn").addEventListener("click", exportZip);
   requireElement("editPopover").addEventListener("submit", saveEditor);
-  requireElement("popoverCancel").addEventListener("click", closeEditor);
+  requireElement("popoverCancel").addEventListener("click", () => closeEditor(true));
   requireElement("editPopover").addEventListener("keydown", event => {
-    if (event.key === "Escape") { event.preventDefault(); closeEditor(); }
+    if (event.key === "Escape") { event.preventDefault(); closeEditor(true); }
+  });
+  // Clicking anywhere outside the popover dismisses it. No focus restore here:
+  // the user is already moving focus with the pointer.
+  document.addEventListener("pointerdown", event => {
+    const popover = requireElement("editPopover");
+    if (!popover.hidden && !popover.contains(event.target)) closeEditor();
   });
   document.querySelectorAll("[data-preview]").forEach(button => {
     button.addEventListener("click", () => selectPreview(button.dataset.preview));
